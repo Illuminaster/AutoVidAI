@@ -1,0 +1,30 @@
+name: Run AutoVidAI_final Script Twice a Day
+
+on:
+  schedule:
+    # Executar às 7:00 AM BRT (10:00 AM UTC)
+    - cron: "0 10 * * *"
+    # Executar às 7:00 PM BRT (10:00 PM UTC)
+    - cron: "0 22 * * *"
+  workflow_dispatch:  # Permite acionar o fluxo manualmente
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Faz checkout do código do repositório
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  # Escolha a versão do Python que você está utilizando
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt  # Instala as dependências do seu código
+
+      - name: Run AutoVidAI_final.py
+        run: |
+          python AutoVidAI_final.py  # Executa o script específico
