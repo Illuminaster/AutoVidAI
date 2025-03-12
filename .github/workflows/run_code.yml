@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: "0 10 * * *"  # 7:00 AM BRT (10 AM UTC)
     - cron: "0 22 * * *"  # 7:00 PM BRT (10 PM UTC)
-  workflow_dispatch:  # Permite que o workflow seja disparado manualmente também
+  workflow_dispatch:  # Permite execução manual
 
 jobs:
   run-script:
@@ -12,20 +12,19 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Run AutoVidAI_final.py
       env:
         YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
         YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-      run: |
-        python AutoVidAI_final.py
+      run: python AutoVidAI_final.py
