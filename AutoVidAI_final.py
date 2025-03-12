@@ -64,11 +64,11 @@ def criar_video(imagens, audios, som_fundo_path, arquivo_saida):
     clips = []
     
     # Carregar som de fundo
-    som_fundo = AudioFileClip(som_fundo_path)
+    som_fundo = AudioFileClip(som_fundo_path)  # Usando caminho relativo para o fundo
     
     for i, img in enumerate(imagens):
         duracao_audio = AudioFileClip(audios[i]).duration  # Obter duração do áudio
-        duracao_fundo = AudioFileClip(som_fundo_path).duration  # Duração do som de fundo
+        duracao_fundo = som_fundo.duration  # Duração do som de fundo
         
         # Caso o som de fundo seja mais longo que o áudio
         if duracao_fundo > duracao_audio:
@@ -95,6 +95,7 @@ def criar_video(imagens, audios, som_fundo_path, arquivo_saida):
     video = video.set_audio(CompositeAudioClip([audio_final, som_fundo_extendido]))  # Mesclar os áudios
 
     video.write_videofile(arquivo_saida, fps=24)
+
 
 # Função para ler orações do arquivo
 def ler_oracoes_do_arquivo(caminho_arquivo):
