@@ -25,7 +25,7 @@ jobs:
       - name: execute py script # run AutoVidAI_final.py
         env:
           API_Key: ${{ secrets.API_KEY }}
-        run: python main.py
+        run: AutoVidAI_final.py
           
       - name: commit files
         run: |
