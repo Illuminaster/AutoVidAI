@@ -2,27 +2,38 @@ name: Run AutoVidAI_final Script Twice a Day
 
 on:
   schedule:
-    - cron: "0 10 * * *"  # 7:00 AM BRT (10 AM UTC)
-    - cron: "0 22 * * *"  # 7:00 PM BRT (10 PM UTC)
-  workflow_dispatch:  # Permite que o workflow seja disparado manualmente também
+    # Rodar todos os dias às 7:00 AM e 7:00 PM BRT
+    - cron: "0 10 * * *"  # 7:00 AM UTC (BRT -3)
+    - cron: "0 22 * * *"  # 7:00 PM UTC (BRT -3)
+  workflow_dispatch:  # Permite rodar manualmente
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
 
     steps:
+      # Passo 1: Fazer checkout do código
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Passo 2: Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
 
+      # Passo 3: Instalar dependências
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
 
+      # Passo 4: Verificar variáveis de ambiente para depuração
+      - name: Debug environment variables
+        run: |
+          echo "YOUTUBE_CLIENT_ID=${{ secrets.YOUTUBE_CLIENT_ID }}"
+          echo "YOUTUBE_CLIENT_SECRET=${{ secrets.YOUTUBE_CLIENT_SECRET }}"
+
+      # Passo 5: Executar o script
       - name: Run AutoVidAI_final.py
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
